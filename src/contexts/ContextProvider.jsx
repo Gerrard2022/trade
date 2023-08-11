@@ -9,8 +9,9 @@ export const customersReducer = (state, action) => {
         customers: action.payload
       }
     case 'CREATE_CUSTOMER':
+      console.log(state)
       return {
-        customers: [action.payload, ...state.customers]
+        customers:{customers:{data:[action.payload, ...state.customers.data]}}
       }
     case 'DELETE_CUSTOMER':
       return {
