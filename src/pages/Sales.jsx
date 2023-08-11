@@ -1,107 +1,52 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { useGetTransactionsQuery } from "../state/api";
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import Header from "../components/Header";
-import DataGridCustomToolbar from "../components/DataGridCustomToolbar";
 
 const Sales = () => {
 
-  // values to be sent to the backend
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
-  const [sort, setSort] = useState({});
-  const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
 
-  const [searchInput, setSearchInput] = useState("");
-  const { data, isLoading } = useGetTransactionsQuery({
-    page,
-    pageSize,
-    sort: JSON.stringify(sort),
-    search,
-  });
-
-  const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      renderCell: (params) => params.value.length,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-    },
-  ];
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BASE_URL}/client/transactions`)
+    .then((res) =>{ 
+      setData(res.data)
+      // setLoading(false);
+    })
+    .catch(err => console.log(err))
+}, []);
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header title="TRANSACTIONS" category="Entire list of transactions" />
-      <Box
-        height="80vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-columnHeaders": {
-
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-
-          },
-          "& .MuiDataGrid-footerContainer": {
-
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-
-          },
-        }}
-      >
-        <DataGrid
-          loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={(data && data.transactions) || []}
-          columns={columns}
-          rowCount={(data && data.total) || 0}
-          rowsPerPageOptions={[20, 50, 100]}
-          pagination
-          page={page}
-          pageSize={pageSize}
-          paginationMode="server"
-          sortingMode="server"
-          onPageChange={(newPage) => setPage(newPage)}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          onSortModelChange={(newSortModel) => setSort(...newSortModel)}
-          components={{ Toolbar: DataGridCustomToolbar }}
-          componentsProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
-          }}
-        />
-      </Box>
-    </Box>
+    <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+          <div className="flex justify-between items-center">
+          <Header category="Your" title="Customers" />
+            <Form />
+        </div> 
+        <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>ID</TableCell>
+          <TableCell>Buyer</TableCell>
+          <TableCell>Date</TableCell>
+          <TableCell>Product Name</TableCell>
+          <TableCell># of product</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map((info) => (
+          <>
+          <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
+            <TableCell>{info._id}</TableCell>
+            <TableCell>{info.name}</TableCell>
+            <TableCell>{info.email}</TableCell>
+            <TableCell>{info.phoneNumber}</TableCell>
+            <TableCell>{info.country}</TableCell>
+            <TableCell onClick={() => handleDelete(info)}><DeleteIcon/></TableCell>
+          </TableRow>
+             </>
+        ))}
+      </TableBody>
+    </Table>  
+      </div>
   );
 };
 

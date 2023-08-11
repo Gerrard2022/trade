@@ -8,21 +8,17 @@ import {
   Collapse,
   Button,
   Typography,
-  // useTheme,
   useMediaQuery,
 } from "@mui/material";
-import {Header} from "../components";
-// import { useGetProductsQuery } from "../state/api";
+import {Header, ProductForm} from "../components";
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Product = ({
   _id,
   name,
-  description,
   price,
   category,
   supply,
-  stat,
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -49,8 +45,6 @@ const Product = ({
         <Typography sx={{ mb: "1.5rem" }} >
           ${Number(price).toFixed(2)}
         </Typography>
-
-        <Typography variant="body2">{description}</Typography>
       </CardContent>
       <CardActions>
         <Button
@@ -70,12 +64,6 @@ const Product = ({
         <CardContent>
           <Typography>id: {_id}</Typography>
           <Typography>Supply Left: {supply}</Typography>
-          <Typography>
-            Yearly Sales This Year: {stat.yearlySalesTotal}
-          </Typography>
-          <Typography>
-            Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}
-          </Typography>
         </CardContent>
       </Collapse>
     </Card>
@@ -104,12 +92,8 @@ const Products = () => {
     <Box m="1.5rem 2.5rem">
     <div className="flex justify-between items-center">
           <Header category="Your" title="Products" />
-            <button
-              type="button"
-              className={` text-white p-3 hover:drop-shadow-xl bg-[#7352ff] rounded-[10px]`}
-              onClick={() => {}}
-            >Add a product</button>
-        </div>
+            <ProductForm />
+        </div> 
       {data || !loading ? (
         <Box
           mt="20px"
@@ -126,23 +110,18 @@ const Products = () => {
             ({
               _id,
               name,
-              description,
               price,
-              rating,
               category,
               supply,
-              stat,
             }) => (
               <Product
                 key={_id}
                 _id={_id}
                 name={name}
-                description={description}
                 price={price}
-                rating={rating}
                 category={category}
                 supply={supply}
-                stat={stat}
+               
               />
             )
           )}

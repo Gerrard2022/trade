@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
-import { useSelector } from "react-redux";
-import { useGetUserQuery } from "./state/api";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Ecommerce, Orders, Employees, Customers, Products, Sales } from './pages';
@@ -12,9 +10,6 @@ import { useStateContext } from './contexts/ContextProvider';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
-
-  const userId = useSelector((state) => state.global.userId);
-  const { data } = useGetUserQuery(userId);
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
@@ -59,7 +54,7 @@ const App = () => {
             }
           >
             <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-              <Navbar user={data || {}}/>
+              <Navbar />
             </div>
             <div>
               {themeSettings && (<ThemeSettings />)}

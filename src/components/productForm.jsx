@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
+import { AiOutlineCaretUp, AiOutlineCaretDown } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useStateContext } from '../contexts/ContextProvider'
 
-const Form = () => {
+const ProductForm = () => {
 
-  const { currentColor, currentMode,  dispatch } = useStateContext();
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    country: '',
-    phoneNumber: ''
+    name: '', 
+    price: '', 
+    category: '', 
+    supply: ''
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BASE_URL}/client/customers`, {...formData})
+    axios.post(`${import.meta.env.VITE_BASE_URL}/client/products`, {...formData})
     .then(res =>     {
-      // location.reload();
-      dispatch({ type: 'CREATE_CUSTOMER', payload: res })
+      location.reload();
+      navigate('/Products');
     })
     .catch(err => console.log(err))
     setIsOpen(false);
@@ -33,7 +35,7 @@ const Form = () => {
         type="button"
         onClick={() => setIsOpen(true)}
       >
-        Open customer Form
+        Open product Form
       </button>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
@@ -41,7 +43,7 @@ const Form = () => {
             <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid rounded-t">
                 <h3 className="text-3xl font-semibold">
-                  Customer Form
+                  Product Form
                 </h3>
                 <button
                   className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -68,43 +70,52 @@ const Form = () => {
                     />
                   </label>
                   <label className="block mb-4">
-                    email:
+                    price:
                     <input
-                      type="email"
+                      type="number"
                       value={formData.email}
                       onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
+                        setFormData({ ...formData, price: e.target.value })
                       }
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
                   </label>
                   <label className="block mb-4">
-                    Phone Number:
+                    category:
                     <input
-                      type="telephone"
+                      type="text"
                       value={formData.phoneNumber}
                       onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
+                        setFormData({ ...formData, category: e.target.value })
                       }
                       className="w-full px-3 py-2 border rounded"
 
                     />
                   </label>
 
-                  <div className="p-4">                
-                      <select value={formData.country} 
-                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                      className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                          >
-                        <option value="">Select a country</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Uganda">Uganda</option>
-                        <option value="Tanzania">Tanzania</option>
-                      </select>
-                  </div>
+                  <label className="block mb-4">
+                    Supply number:
+                    <input
+                      type="number"
+                      value={formData.phoneNumber}
+                      onChange={(e) =>
+                        setFormData({ ...formData, supply: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border rounded"
+
+                    />
+                  </label>
+
+                  {/* Add other input fields here */}
                   <div className="flex justify-between items-center">                   
+                        {/* <Button
+                        color="white"
+                        bgColor={currentColor}
+                        text="Add"
+                        borderRadius="10px"
+                        onClick={handleSubmit}
+                        /> */}
                         <button
                         type="submit"
                         onClick={() => handleSubmit}
@@ -123,4 +134,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ProductForm;

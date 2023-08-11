@@ -12,17 +12,11 @@ const Orders = () => {
   };
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-        {/* <div className="flex justify-between items-center">
-          <Header category="Page" title="Orders" />
-            <Button
-            color="white"
-              bgColor={currentColor}
-              text="Add an order"
-              borderRadius="10px"
-              onClick={() => {}}
-            />
-        </div> */}
+        <div className="flex justify-between items-center">
+         <Header category="Page" title="Orders" />
         <Form type="product" onSubmit={handleProductSubmit} />
+        </div>
+
     </div>
   );
 };
