@@ -35,7 +35,7 @@ const Sales = () => {
       </TableHead>
       <TableBody>
         {data.map((info) => (
-          <>
+         
           <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
             <TableCell>{info._id}</TableCell>
             <TableCell>{info.name}</TableCell>
@@ -44,7 +44,7 @@ const Sales = () => {
             <TableCell>{info.country}</TableCell>
             <TableCell onClick={() => handleDelete(info)}><DeleteIcon/></TableCell>
           </TableRow>
-             </>
+            
         ))}
       </TableBody>
     </Table>  

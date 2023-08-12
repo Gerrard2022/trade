@@ -9,24 +9,31 @@ const BuyForm = ({ ID }) => {
   const {  dispatchs } = useStateContext();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState([{
-     id: '',
-     unitsTaken: '',
-  }]);
-
+  const [products, setProducts] = useState([
+    {
+      id: '',
+      unitsTaken: '',
+    }
+  ]);
+  
   const handleSubmit = (e) => {
-   // console.log(products.id);
     e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, {products})
-    .then(res =>     {
-      // location.reload();
-      dispatchs({ type: 'CREATE_TRANSACTION', payload: res })
-      alert("purchase done");
-
-    })
-    .catch(err => console.log(err))
-    setIsOpen(false);
+    
+    console.log("Products:", products);
+  
+    axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, { products })
+      .then(res => {
+        if (res.status === 201) { // Check the response status
+          dispatchs({ type: 'CREATE_TRANSACTION', payload: res.data }); // Dispatch res.data
+          alert("Purchase done");
+        } else {
+          console.error("Transaction creation failed");
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setIsOpen(false)); // Always close the modal, regardless of success or failure
   };
+  
 
   return (
     <div>
