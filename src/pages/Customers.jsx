@@ -20,7 +20,7 @@ const Customers = () => {
       .then((res) =>{ 
         //setData(res.data)
         // setLoading(false);
-        dispatch({ type: 'GET_CUSTOMERS', payload: res })
+        dispatch({ type: 'GET_CUSTOMERS', payload: res.data })
       })
       .catch(err => console.log(err))
   }, []);
@@ -52,7 +52,7 @@ const Customers = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {customers && customers.data && customers.data.map((info) => (       
+        {customers && customers.map((info) => (       
           <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
             <TableCell>{info._id}</TableCell>
             <TableCell>{info.name}</TableCell>

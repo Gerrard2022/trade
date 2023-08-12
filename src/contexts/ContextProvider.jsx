@@ -9,13 +9,13 @@ export const customersReducer = (state, action) => {
         customers: action.payload
       }
     case 'CREATE_CUSTOMER':
-      console.log(state)
+      console.log(action.payload.data)
       return {
-        customers:{customers:{data:[action.payload, ...state.customers.data]}}
+        customers: [action.payload.data,...state.customers]
       }
     case 'DELETE_CUSTOMER':
       return {
-        customers: state.customers.data.filter((w) => w._id !== action.payload._id)
+        customers: state.customers.filter((w) => w._id !== action.payload._id)
       }
     default:
       return state
