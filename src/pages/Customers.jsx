@@ -27,7 +27,7 @@ const Customers = () => {
 
   const handleDelete = ({ _id, name }) => {
     axios.delete(`${import.meta.env.VITE_BASE_URL}/client/customers/${_id}`)
-    .then(() => {
+    .then(res => {
       alert(name + " has been deleted");
       dispatch({ type: 'DELETE_CUSTOMER', payload: res })
       //location.reload();

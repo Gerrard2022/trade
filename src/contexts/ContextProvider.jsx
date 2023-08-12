@@ -14,8 +14,30 @@ export const customersReducer = (state, action) => {
         customers: [action.payload.data,...state.customers]
       }
     case 'DELETE_CUSTOMER':
+      console.log(action.payload.data)
       return {
-        customers: state.customers.filter((w) => w._id !== action.payload._id)
+        customers: state.customers.filter((w) => w._id !== action.payload.data._id)
+      }
+    default:
+      return state
+  }
+}
+
+export const transactionsReducer = (state, action) => {
+  switch (action.type) {
+    case 'GET_TRANSACTIONS': 
+      return {
+        customers: action.payload
+      }
+    case 'CREATE_TRANSACTION':
+      console.log(action.payload.data)
+      return {
+        customers: [action.payload.data,...state.customers]
+      }
+    case 'DELETE_TRANSACTION':
+      console.log(action.payload.data)
+      return {
+        customers: state.customers.filter((w) => w._id !== action.payload.data._id)
       }
     default:
       return state
@@ -36,6 +58,9 @@ export const ContextProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(customersReducer, {
     customers: [] // Initialize with an empty array
+  });
+  const [states, dispatchs] = useReducer(transactionsReducer, {
+    transactions: [] // Initialize with an empty array
   });
 
 
@@ -64,7 +89,7 @@ export const ContextProvider = ({ children }) => {
 
   return (
 
-    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, ...state, dispatch }}>
+    <StateContext.Provider value={{ currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, ...state, dispatch, ...states, dispatchs }}>
       {children}
     </StateContext.Provider>
   );

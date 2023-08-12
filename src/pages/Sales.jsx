@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import Header from "../components/Header";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {Header, TransactionForm} from "../components";
+import axios from 'axios';
 
 const Sales = () => {
 
@@ -19,7 +21,7 @@ const Sales = () => {
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <div className="flex justify-between items-center">
           <Header category="Your" title="Customers" />
-            <Form />
+            <TransactionForm />
         </div> 
         <Table>
       <TableHead>
@@ -33,7 +35,7 @@ const Sales = () => {
       </TableHead>
       <TableBody>
         {data.map((info) => (
-          <>
+         
           <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
             <TableCell>{info._id}</TableCell>
             <TableCell>{info.name}</TableCell>
@@ -42,7 +44,7 @@ const Sales = () => {
             <TableCell>{info.country}</TableCell>
             <TableCell onClick={() => handleDelete(info)}><DeleteIcon/></TableCell>
           </TableRow>
-             </>
+            
         ))}
       </TableBody>
     </Table>  

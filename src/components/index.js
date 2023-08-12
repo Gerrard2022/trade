@@ -10,3 +10,5 @@ export { default as UserProfile } from './UserProfile';
 export { default as Form } from './Form';
 export { default as ProductForm } from './productForm';
 export { default as Header } from './Header';
+export { default as TransactionForm } from './TransactionForm';
+export { default as BuyForm } from './BuyForm';

@@ -10,7 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import {Header, ProductForm} from "../components";
+import {Header, ProductForm, BuyForm} from "../components";
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Product = ({
@@ -32,11 +32,13 @@ const Product = ({
       }}
     >
       <CardContent>
+      <BuyForm ID={_id}/>  
         <Typography
           sx={{ fontSize: 14 }}
 
           gutterBottom
         >
+              
           {category}
         </Typography>
         <Typography variant="h5" component="div">
@@ -45,27 +47,8 @@ const Product = ({
         <Typography sx={{ mb: "1.5rem" }} >
           ${Number(price).toFixed(2)}
         </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          See More
-        </Button>
-      </CardActions>
-      <Collapse
-        in={isExpanded}
-        timeout="auto"
-        unmountOnExit
-
-      >
-        <CardContent>
-          <Typography>id: {_id}</Typography>
           <Typography>Supply Left: {supply}</Typography>
-        </CardContent>
-      </Collapse>
+      </CardContent>
     </Card>
   );
 };
