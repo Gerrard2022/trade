@@ -32,14 +32,13 @@ const Product = ({
       }}
     >
       <CardContent>
+      <BuyForm ID={_id}/>  
         <Typography
           sx={{ fontSize: 14 }}
 
           gutterBottom
         >
-          <>
-          <BuyForm ID={_id}/>
-          </>
+              
           {category}
         </Typography>
         <Typography variant="h5" component="div">
