@@ -23,24 +23,24 @@ export const customersReducer = (state, action) => {
   }
 }
 
-export const transactionsReducer = (state, action) => {
+export const transactionsReducer = (states, action) => {
   switch (action.type) {
     case 'GET_TRANSACTIONS': 
       return {
-        customers: action.payload
+        transactions: action.payload
       }
     case 'CREATE_TRANSACTION':
       console.log(action.payload.data)
       return {
-        customers: [action.payload.data,...state.customers]
+        transactions: [action.payload.data,...states.transactions]
       }
     case 'DELETE_TRANSACTION':
       console.log(action.payload.data)
       return {
-        customers: state.customers.filter((w) => w._id !== action.payload.data._id)
+        transactions: states.transactions.filter((w) => w._id !== action.payload.data._id)
       }
     default:
-      return state
+      return states
   }
 }
 

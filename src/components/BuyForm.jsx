@@ -4,24 +4,23 @@ import axios from 'axios';
 import { useStateContext } from '../contexts/ContextProvider';
 import ShopIcon from '@mui/icons-material/Shop';
 
-const BuyForm = ({ ID }) => {
+const BuyForm = ({ ID, name }) => {
 
   const {  dispatchs } = useStateContext();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState({products: []});
+  const [products, setProducts] = useState([]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log("Products:", products);
   
-    axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, { products })
+    axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`,  { products })
       .then(res => {
         if (res.status === 201) { // Check the response status
-          dispatchs({ type: 'CREATE_TRANSACTION', payload: res.data }); // Dispatch res.data
-          alert("Purchase done");
+          dispatchs({ type: 'CREATE_TRANSACTION', payload: res }); // Dispatch res.data
+          alert(`Purchase done for ${products[0].unitsTaken}  items of ${name}`);
           setProducts({products: []});
+          location.reload()
         } else {
           console.error("Transaction creation failed");
            setProducts({products: []});
@@ -70,11 +69,9 @@ const BuyForm = ({ ID }) => {
                     Number of Items:
                     <input
                       type="telephone"
-                      value={setProducts.unitsTaken}
+                      value={products.unitsTaken}
                     onChange={(e) =>
-                      setProducts({
-                        products: [{ id: ID, unitsTaken: e.target.value }]
-                      })
+                      setProducts([{ id: ID, unitsTaken: e.target.value }])
                     }
                       className="w-full px-3 py-2 border rounded"
 

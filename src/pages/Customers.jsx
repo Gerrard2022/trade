@@ -12,7 +12,7 @@ const Customers = () => {
   const { currentColor, currentMode, customers, dispatch } = useStateContext();
 
 
-  const [data, setData] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

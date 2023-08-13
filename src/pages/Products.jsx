@@ -32,7 +32,7 @@ const Product = ({
       }}
     >
       <CardContent>
-      <BuyForm ID={_id}/>  
+      <BuyForm ID={_id} name={name}/>  
         <Typography
           sx={{ fontSize: 14 }}
 
@@ -55,7 +55,7 @@ const Product = ({
 
 const Products = () => {
   // const { data, isLoading } = useGetProductsQuery();
-  const { currentColor, currentMode } = useStateContext();
+  const { currentColor, currentMode, transactions } = useStateContext();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
   const [data, setData] = useState([]);
