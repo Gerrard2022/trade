@@ -9,12 +9,7 @@ const BuyForm = ({ ID }) => {
   const {  dispatchs } = useStateContext();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState([
-    {
-      id: '',
-      unitsTaken: '',
-    }
-  ]);
+  const [products, setProducts] = useState({products: []});
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,11 +21,16 @@ const BuyForm = ({ ID }) => {
         if (res.status === 201) { // Check the response status
           dispatchs({ type: 'CREATE_TRANSACTION', payload: res.data }); // Dispatch res.data
           alert("Purchase done");
+          setProducts({products: []});
         } else {
           console.error("Transaction creation failed");
+           setProducts({products: []});
         }
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+       setProducts({products: []})
+      })
       .finally(() => setIsOpen(false)); // Always close the modal, regardless of success or failure
   };
   
@@ -40,11 +40,10 @@ const BuyForm = ({ ID }) => {
       <button
         className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
         type="button"
-        onClick={() => {
-            setIsOpen(true)
-            setProducts({ ...products, id: ID });
-        }}
-            >               
+      onClick={() => {
+          setIsOpen(true);
+           }}
+           >
           <ShopIcon/>
       </button>
       {isOpen && (
@@ -72,9 +71,11 @@ const BuyForm = ({ ID }) => {
                     <input
                       type="telephone"
                       value={setProducts.unitsTaken}
-                      onChange={(e) =>
-                        setProducts({ ...products, unitsTaken: e.target.value })
-                      }
+                    onChange={(e) =>
+                      setProducts({
+                        products: [{ id: ID, unitsTaken: e.target.value }]
+                      })
+                    }
                       className="w-full px-3 py-2 border rounded"
 
                     />
