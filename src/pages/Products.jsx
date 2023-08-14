@@ -32,7 +32,7 @@ const Product = ({
       }}
     >
       <CardContent>
-      <BuyForm ID={_id} name={name}/>  
+      <BuyForm ID={_id} name={name} price={price}/>  
         <Typography
           sx={{ fontSize: 14 }}
 

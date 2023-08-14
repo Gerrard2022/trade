@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { useStateContext } from '../contexts/ContextProvider';
 import ShopIcon from '@mui/icons-material/Shop';
 
-const BuyForm = ({ ID, name }) => {
+const BuyForm = ({ ID, name, price }) => {
 
-  const {  dispatchs } = useStateContext();
+  const {  dispatchs, dispatch,customers } = useStateContext();
 
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState([]);
+
+  //states for orders form
+  const [cust, useCust] = useState('');
+  const [method, setMethod] = useState('');
+
+  // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
+  // console.log(parseInt(price, 10));
+  console.log(price);
   
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
+    .then((res) =>{ 
+      dispatch({ type: 'GET_CUSTOMERS', payload: res.data })
+    })
+    .catch(err => console.log(err))
+}, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -64,15 +80,51 @@ const BuyForm = ({ ID, name }) => {
               </div>
               <div className="relative p-6 flex-auto">
                 <form onSubmit={handleSubmit}>
+
+
+                      <div className="p-4">                
+                      <select value={cust} 
+                      onChange={(e) =>  useCust(e.target.value)}
+                      className="block appearance-none w-[18rem] bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      required
+                          >
+                        <option>Select customer</option>
+                        {customers && customers.map((info) => (
+                        <option key={info._id}>{info.name}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <div className="p-4">                
+                      <select value={method} 
+                      onChange={(e) => setMethod(e.target.value)}
+                      className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      required
+                          >
+                        <option value="">Select a payment method</option>
+                        <option value="Rwanda">Bank</option>
+                        <option value="Uganda">Cash</option>
+                      </select>
+                  </div>
+                
         
                   <label className="block mb-4">
                     Ordered Bags:
                     <input
-                      type="telephone"
+                      type="number"
                       value={products.unitsTaken}
                     onChange={(e) =>
                       setProducts([{ id: ID, unitsTaken: e.target.value }])
                     }
+                      className="w-full px-3 py-2 border rounded"
+
+                    />
+                  </label>
+                  <label className="block mb-4">
+                    Amount to pay:
+                    <input
+                      type="number"
+                     // defaultValue={parseInt(price, 10) * parseInt(products.unitsTaken, 10)}
                       className="w-full px-3 py-2 border rounded"
 
                     />

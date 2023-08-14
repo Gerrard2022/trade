@@ -18,8 +18,6 @@ const Customers = () => {
   useEffect(() => {
       axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
       .then((res) =>{ 
-        //setData(res.data)
-        // setLoading(false);
         dispatch({ type: 'GET_CUSTOMERS', payload: res.data })
       })
       .catch(err => console.log(err))
