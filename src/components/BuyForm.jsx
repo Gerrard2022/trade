@@ -51,7 +51,7 @@ const BuyForm = ({ ID, name }) => {
             <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid rounded-t">
                 <h3 className="text-3xl font-semibold">
-                  BUY
+                  SELL
                 </h3>
                 <button
                   className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -66,7 +66,7 @@ const BuyForm = ({ ID, name }) => {
                 <form onSubmit={handleSubmit}>
         
                   <label className="block mb-4">
-                    Number of Items:
+                    Ordered Bags:
                     <input
                       type="telephone"
                       value={products.unitsTaken}
