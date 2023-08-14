@@ -23,7 +23,7 @@ const Sales = () => {
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <div className="flex justify-between items-center">
-          <Header category="Your" title="Customers" />
+          <Header category="Your" title="Orders" />
             <TransactionForm />
         </div> 
         <Table>

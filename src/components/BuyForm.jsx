@@ -13,11 +13,12 @@ const BuyForm = ({ ID, name, price }) => {
 
   //states for orders form
   const [cust, useCust] = useState('');
-  const [method, setMethod] = useState('');
+  const [method, setMethod] = useState();
+  const [paid, setPaid] = useState();
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
-  console.log(price);
+ // console.log(parseInt(products.unitsTaken, 10));
   
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
@@ -122,6 +123,26 @@ const BuyForm = ({ ID, name, price }) => {
                   </label>
                   <label className="block mb-4">
                     Amount to pay:
+                    <input
+                      type="number"
+                      defaultValue={price * products.unitsTaken}
+                      className="w-full px-3 py-2 border rounded"
+
+                    />
+                  </label>
+                  <label className="block mb-4">
+                    Paid:
+                    <input
+                      type="number"
+                      value={paid}
+                      className="w-full px-3 py-2 border rounded"
+                      onChange={(e) =>
+                        setPaid(e.target.value)
+                      }
+                    />
+                  </label>
+                  <label className="block mb-4">
+                    Balance:
                     <input
                       type="number"
                      // defaultValue={parseInt(price, 10) * parseInt(products.unitsTaken, 10)}
