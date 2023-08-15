@@ -118,7 +118,7 @@ const BuyForm = ({ ID, name, price }) => {
                       value={products.unitsTaken}
                     onChange={(e) =>{
                       setProducts([{ id: ID, unitsTaken: e.target.value }])
-                      setTopay(products.length > 0 ? price * e.target.value  : price *0)
+                      setTopay(price * e.target.value)
                      } }
                       className="w-full px-3 py-2 border rounded"
                     />
