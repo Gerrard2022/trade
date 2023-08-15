@@ -23,7 +23,7 @@ const Sales = () => {
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <div className="flex justify-between items-center">
-          <Header category="Your" title="Orders" />
+          <Header category="Item" title="Orders" />
             <TransactionForm />
         </div> 
         <Table>
@@ -45,13 +45,12 @@ const Sales = () => {
           <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
             <TableCell>{format(new Date(info.createdAt), "MM/dd/yyyy 'at' hh:mm a")}</TableCell>
             <TableCell>{info.name}</TableCell>
-            <TableCell>{info.email}</TableCell>
+            <TableCell>{info.customer}</TableCell>
             <TableCell>{info.phoneNumber}</TableCell>
-            <TableCell>{info.country}</TableCell>
-            <TableCell>{info.country}</TableCell>
-            <TableCell>{info.country}</TableCell>
-            <TableCell>{info.country}</TableCell>
-            <TableCell onClick={() => handleDelete(info)}><DeleteIcon/></TableCell>
+            <TableCell>{info.orderedBags}</TableCell>
+            <TableCell>{info.shippedBags}</TableCell>
+            <TableCell>{info.leftBags}</TableCell>
+            <TableCell>${info.totalAmount}</TableCell>
           </TableRow>
             
         ))}

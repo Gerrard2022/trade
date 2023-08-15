@@ -18,7 +18,9 @@ const BuyForm = ({ ID, name, price }) => {
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
- // console.log(parseInt(products.unitsTaken, 10));
+  console.log(products.length);
+  
+
   
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
@@ -114,20 +116,19 @@ const BuyForm = ({ ID, name, price }) => {
                     <input
                       type="number"
                       value={products.unitsTaken}
-                    onChange={(e) =>
+                    onChange={(e) =>{
                       setProducts([{ id: ID, unitsTaken: e.target.value }])
-                    }
+                      //console.log(typeof parseInt(products[0].unitsTaken, 10))
+                     } }
                       className="w-full px-3 py-2 border rounded"
-
                     />
                   </label>
                   <label className="block mb-4">
                     Amount to pay:
                     <input
                       type="number"
-                      defaultValue={price * products.unitsTaken}
+                      defaultValue={products.length > 0 ? price * products[0].unitsTaken : 0}
                       className="w-full px-3 py-2 border rounded"
-
                     />
                   </label>
                   <label className="block mb-4">
