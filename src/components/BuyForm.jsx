@@ -15,10 +15,11 @@ const BuyForm = ({ ID, name, price }) => {
   const [cust, useCust] = useState('');
   const [method, setMethod] = useState();
   const [paid, setPaid] = useState();
+  const [topay, setTopay] = useState(0);
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
-  console.log(products.length);
+  console.log(typeof price, price, products.length > 0 ? price * products[0].unitsTaken : 0);
   
 
   
@@ -118,7 +119,7 @@ const BuyForm = ({ ID, name, price }) => {
                       value={products.unitsTaken}
                     onChange={(e) =>{
                       setProducts([{ id: ID, unitsTaken: e.target.value }])
-                      //console.log(typeof parseInt(products[0].unitsTaken, 10))
+                      setTopay(products.length > 0 ? price * products[0].unitsTaken : 0)
                      } }
                       className="w-full px-3 py-2 border rounded"
                     />
@@ -127,7 +128,7 @@ const BuyForm = ({ ID, name, price }) => {
                     Amount to pay:
                     <input
                       type="number"
-                      defaultValue={products.length > 0 ? price * products[0].unitsTaken : 0}
+                      value={topay}
                       className="w-full px-3 py-2 border rounded"
                     />
                   </label>
