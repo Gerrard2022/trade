@@ -84,8 +84,6 @@ const BuyForm = ({ ID, name, price }) => {
               </div>
               <div className="relative p-6 flex-auto">
                 <form onSubmit={handleSubmit}>
-
-
                       <div className="p-4">                
                       <select value={cust} 
                       onChange={(e) =>  useCust(e.target.value)}
@@ -106,38 +104,35 @@ const BuyForm = ({ ID, name, price }) => {
                       required
                           >
                         <option value="">Select a payment method</option>
-                        <option value="Rwanda">Bank</option>
-                        <option value="Uganda">Cash</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Cash">Cash</option>
                       </select>
                   </div>
                 
         
                   <label className="block mb-4">
                     Ordered Bags:
+                    </label>
                     <input
                       type="number"
                       value={products.unitsTaken}
                     onChange={(e) =>{
                       setProducts([{ id: ID, unitsTaken: e.target.value }])
-                      setTopay(products.length > 0 ? price * products[0].unitsTaken : 0)
+                      setTopay(products.length > 0 ? price * e.target.value  : price *0)
                      } }
                       className="w-full px-3 py-2 border rounded"
                     />
-                  </label>
                   <label className="block mb-4">
                     Amount to pay:
+                    </label>
                     <input
                       type="number"
                       value={topay}
-                      onChange={() =>{
-                        
-                        setTopay(products.length > 0 ? price * products[0].unitsTaken : 0)
-                       } }
                       className="w-full px-3 py-2 border rounded"
                     />
-                  </label>
                   <label className="block mb-4">
                     Paid:
+                    </label>
                     <input
                       type="number"
                       value={paid}
@@ -146,16 +141,15 @@ const BuyForm = ({ ID, name, price }) => {
                         setPaid(e.target.value)
                       }
                     />
-                  </label>
                   <label className="block mb-4">
                     Balance:
+                    </label>
                     <input
                       type="number"
                      // defaultValue={parseInt(price, 10) * parseInt(products.unitsTaken, 10)}
                       className="w-full px-3 py-2 border rounded"
 
                     />
-                  </label>
 
                   <div className="flex justify-between items-center">                   
                         <button
