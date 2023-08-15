@@ -129,6 +129,10 @@ const BuyForm = ({ ID, name, price }) => {
                     <input
                       type="number"
                       value={topay}
+                      onChange={() =>{
+                        
+                        setTopay(products.length > 0 ? price * products[0].unitsTaken : 0)
+                       } }
                       className="w-full px-3 py-2 border rounded"
                     />
                   </label>
