@@ -16,10 +16,11 @@ const BuyForm = ({ ID, name, price }) => {
   const [method, setMethod] = useState();
   const [paid, setPaid] = useState();
   const [topay, setTopay] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
-  console.log(typeof price, price, products.length > 0 ? price * products[0].unitsTaken : 0);
+  console.log("topay", topay, "paid", paid, (topay - paid));
   
 
   
@@ -137,16 +138,17 @@ const BuyForm = ({ ID, name, price }) => {
                       type="number"
                       value={paid}
                       className="w-full px-3 py-2 border rounded"
-                      onChange={(e) =>
+                      onChange={(e) =>{
                         setPaid(e.target.value)
-                      }
+                        setBalance(topay - e.target.value)
+                       }}
                     />
                   <label className="block mb-4">
                     Balance:
                     </label>
                     <input
                       type="number"
-                     // defaultValue={parseInt(price, 10) * parseInt(products.unitsTaken, 10)}
+                      value={balance}
                       className="w-full px-3 py-2 border rounded"
 
                     />

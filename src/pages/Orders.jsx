@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
 
@@ -40,21 +40,52 @@ const Sales = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((info) => (
-         
-          <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
-            <TableCell>{format(new Date(info.createdAt), "MM/dd/yyyy 'at' hh:mm a")}</TableCell>
-            <TableCell>{info.name}</TableCell>
-            <TableCell>{info.customer}</TableCell>
-            <TableCell>{info.phoneNumber}</TableCell>
-            <TableCell>{info.orderedBags}</TableCell>
-            <TableCell>{info.shippedBags}</TableCell>
-            <TableCell>{info.leftBags}</TableCell>
-            <TableCell>${info.totalAmount}</TableCell>
-          </TableRow>
-            
-        ))}
-      </TableBody>
+  {data.map((info) => (
+    <TableRow key={info._id} className="cursor-pointer hover:bg-gray-100">
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {format(new Date(info.createdAt), "MM/dd/yyyy 'at' hh:mm a")}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.name}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.customer}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.phoneNumber}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.orderedBags}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.shippedBags}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          {info.leftBags}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={`/orders/${info._id}`}>
+          ${info.totalAmount}
+        </Link>
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
+
     </Table>  
       </div>
   );
