@@ -17,6 +17,7 @@ const BuyForm = ({ ID, name, price }) => {
   const [paid, setPaid] = useState();
   const [topay, setTopay] = useState(0);
   const [balance, setBalance] = useState(0);
+  const [unitsTaken, setUnitsTaken] = useState(0);
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
@@ -34,7 +35,8 @@ const BuyForm = ({ ID, name, price }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+    setProducts([{ id: ID, unitsTaken: unitsTaken, customer: cust, balance: balance, topay: topay, paid: paid, method: method}])
+    console.log(products);
     axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`,  { products })
       .then(res => {
         if (res.status === 201) { // Check the response status
@@ -54,6 +56,7 @@ const BuyForm = ({ ID, name, price }) => {
       .finally(() => setIsOpen(false)); // Always close the modal, regardless of success or failure
   };
   
+  console.log(products);
 
   return (
     <div>
@@ -116,9 +119,10 @@ const BuyForm = ({ ID, name, price }) => {
                     </label>
                     <input
                       type="number"
-                      value={products.unitsTaken}
+                      value={unitsTaken}
                     onChange={(e) =>{
-                      setProducts([{ id: ID, unitsTaken: e.target.value }])
+                     // setProducts([{ id: ID, unitsTaken: e.target.value }])
+                     setUnitsTaken(e.target.value)
                       setTopay(price * e.target.value)
                      } }
                       className="w-full px-3 py-2 border rounded"
