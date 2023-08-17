@@ -21,7 +21,7 @@ const BuyForm = ({ ID, name, price }) => {
 
   // console.log(parseInt(price, 10) * parseInt(products.unitsTaken, 10));
   // console.log(parseInt(price, 10));
-  console.log("topay", topay, "paid", paid, (topay - paid));
+  //console.log("topay", topay, "paid", paid, (topay - paid));
   
 
   
@@ -56,7 +56,7 @@ const BuyForm = ({ ID, name, price }) => {
       .finally(() => setIsOpen(false)); // Always close the modal, regardless of success or failure
   };
   
-  console.log(products);
+ // console.log(products);
 
   return (
     <div>

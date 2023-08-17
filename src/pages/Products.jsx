@@ -3,10 +3,7 @@ import axios from 'axios';
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
-  Collapse,
-  Button,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -14,14 +11,13 @@ import {Header, ProductForm, BuyForm} from "../components";
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Product = ({
-  _id,
-  name,
+  itemNumber,
   price,
-  category,
   supply,
+  _id,
+  size
 }) => {
 
-  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <Card
@@ -32,22 +28,22 @@ const Product = ({
       }}
     >
       <CardContent>
-      <BuyForm ID={_id} name={name} price={price}/>  
+      <BuyForm ID={_id} itemNumber={itemNumber} price={price}/>  
         <Typography
           sx={{ fontSize: 14 }}
 
           gutterBottom
         >
               
-          {category}
+          {size}
         </Typography>
         <Typography variant="h5" component="div">
-          {name}
+          {itemNumber}
         </Typography>
         <Typography sx={{ mb: "1.5rem" }} >
           ${Number(price).toFixed(2)}
         </Typography>
-          <Typography>Supply Left: {supply}</Typography>
+          <Typography>Items Left: {supply}</Typography>
       </CardContent>
     </Card>
   );
@@ -62,9 +58,10 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-      axios.get(`${import.meta.env.VITE_BASE_URL}/client/products`)
+      axios.get(`${import.meta.env.VITE_BASE_URL}/client/stocks`)
       .then((res) =>{ 
-        setData(res.data)
+        setData(res.data);
+       // console.log("hii", res.data.items);
         setLoading(false);
       })
       .catch(err => console.log(err))
@@ -89,23 +86,32 @@ const Products = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {data.map(
-            ({
-              _id,
-              name,
-              price,
-              category,
-              supply,
-            }) => (
+          {data && data.map((stock) => (
+             <div key={stock._id} className="flex-row flex-wrap">
+             <p>Stock Date: {stock.stockDate}</p>
+             <p>Number of Bags: {stock.numberOfBags}</p>
+             {/* ... other stock fields */}
+             
+             <p>Items:</p>
+             {stock.items.map(({
+              itemNumber,
+              size,
+              itemSellingPrice,
+              unitsOnHand,
+              _id
+          }) => (
+            <div className="">
               <Product
                 key={_id}
                 _id={_id}
-                name={name}
-                price={price}
-                category={category}
-                supply={supply}
-               
+                itemNumber={itemNumber}
+                price={itemSellingPrice}
+                supply={unitsOnHand}
+                size={size}
               />
+              </div>
+              ))}
+              </div>
             )
           )}
         </Box>
