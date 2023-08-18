@@ -1,10 +1,62 @@
-import React from 'react'
+import { useState } from 'react';
+import axios from 'axios';
 
 import {Header} from "../components";
 
 const Inventory = () => {
+
+  // image upload states and code
+  const [fileInputState, setFileInputState] = useState('');
+  const [previewSource, setPreviewSource] = useState('');
+  const [selectedFile, setSelectedFile] = useState();
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    previewFile(file);
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
+};
+
+const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+        setPreviewSource(reader.result);
+    };
+};
+
+  const handleSubmit = () => {
+    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+        uploadImage(reader.result);
+    };
+    reader.onerror = () => {
+        console.error('AHHHHHHHH!!');
+        alert('something went wrong!');
+    };
+     };
+
+  const uploadImage = async (base64EncodedImage) => {
+      try {
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/client/stocks`, { data: base64EncodedImage }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+          setFileInputState('');
+          setPreviewSource('');
+          alert('Image uploaded successfully');
+      } catch (err) {
+          console.error(err);
+          alert('Something went wrong!');
+      }
+  };
+
+
   return (
-    <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl relative">
           <div className="flex justify-between items-center">
           <Header category="Your" title="Inventory List" />          
         </div> 
@@ -41,9 +93,9 @@ const Inventory = () => {
                       required
                           >
                         
-                        <option value="Rwanda">A</option>
-                        <option value="Uganda">B</option>
-                        <option value="Tanzania">C</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
                       </select>
                   </div>
                   </label>  
@@ -97,9 +149,25 @@ const Inventory = () => {
                       required
                     />
             </label>
+            <input
+                    id="fileInput"
+                    type="file"
+                    name="image"
+                    onChange={handleFileInputChange}
+                    value={fileInputState}
+                    className="form-input"
+                />
+
+        {previewSource && (
+                <img
+                    src={previewSource}
+                    alt="chosen"
+                    style={{ height: '300px' }}
+                />
+            )}
         </div>
-        
-        <div className="flex-col mr-[3rem] ">
+    
+        <div className="flex-col">
           <p className="text-3xl font-extrabold tracking-tight text-slate-900">
             Add New Stock
            </p>
