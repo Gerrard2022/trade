@@ -1,129 +1,62 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import {Header} from "../components";
+import { Header } from '../components';
 
-const Inventory = () => {
+const InventoryDetails = () => {
 
-  // image upload states and code
-  const [fileInputState, setFileInputState] = useState('');
-  const [previewSource, setPreviewSource] = useState('');
-  const [selectedFile, setSelectedFile] = useState();
+    const { Stock_id, Item_id } = useParams();
 
-  // states 4 inventory item
-  const [itemNumber, setItemNumber] = useState();
-  const [size, setSize] = useState();
-  const [location, setLocation] = useState();
-  const [pair, setPair] = useState();
-  const [fPrice, setFPrice] = useState();
-  const [sPrice, setSPrice] = useState();
-  const [reorder, setReorder] = useState();
-  const [units, setUnits] = useState();
-
-  // states fr stock
-  const [stockDate, setStockDate ] = useState();
-  const [numberOfBags, setNumberOfBags ] = useState();
-  const [Slocation, setSlocation ] = useState();
-  const [description, setDescription ] = useState();
-  const [factoryPrice, setFactoryPrice ] = useState();
-  const [sellingPrice, setSellingPrice] = useState();
-
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    previewFile(file);
-    setSelectedFile(file);
-    setFileInputState(e.target.value);
-};
-
-const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-        setPreviewSource(reader.result);
-    };
-};
-
-  const handleSubmit = (e) => {
-    // if (!selectedFile) return;
-    // const reader = new FileReader();
-    // reader.readAsDataURL(selectedFile);
-    // reader.onloadend = () => {
-    //     uploadImage(reader.result);
-    // };
-    // reader.onerror = () => {
-    //     console.error('AHHHHHHHH!!');
-    //     alert('something went wrong!');
-    // };
-console.log(itemNumber, 
-  size, 
-  location, 
-  pair, 
-  fPrice, 
-  sPrice, 
-  reorder, 
-  units, 
-  stockDate, 
-  numberOfBags,
-  Slocation,
-  description,
-  factoryPrice,
-  sellingPrice);
-    e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BASE_URL}/client/stocks`, 
-    {itemNumber, 
-      size, 
-      location, 
-      pair, 
-      fPrice, 
-      sPrice, 
-      reorder, 
-      units, 
-      stockDate, 
-      numberOfBags,
-      Slocation,
-      description,
-      factoryPrice,
-      sellingPrice
-
-    })
-    .then(res =>  {
-      alert("Added !!!")   
-      location.reload();
-      
-    })
-    .catch(err => console.log(err))
-     };
-
-  // const uploadImage = async (base64EncodedImage) => {
-  //     try {
-  //       await axios.post(`${import.meta.env.VITE_BASE_URL}/client/stocks`, { data: base64EncodedImage }, {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-  //         setFileInputState('');
-  //         setPreviewSource('');
-  //         alert('Image uploaded successfully');
-  //     } catch (err) {
-  //         console.error(err);
-  //         alert('Something went wrong!');
-  //     }
-  // };
+    console.log("info: ", Stock_id);
+    console.log("item: ", Item_id);
+    
+    const [data, setData] = useState();
 
 
+
+    const [itemNumber, setItemNumber] = useState();
+    const [size, setSize] = useState();
+    const [location, setLocation] = useState();
+    const [pair, setPair] = useState();
+    const [fPrice, setFPrice] = useState();
+    const [sPrice, seSPrice] = useState();
+    const [reorder, setReorder] = useState();
+    const [units, setUnits] = useState();
+
+    const [items, setItems ] = useState([]);
+
+    // stock states
+
+    const [selectedItem, setSelectedItem ] = useState();
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/client/stocks/${Stock_id}`)
+        .then((res) =>{ 
+            setData(res.data)
+            setSelectedItem(res.data.items.find(item => item._id === Item_id))
+
+            })
+        .catch(err => console.log(err))
+    }, []);
+
+    const handleUpdate = (e) => {
+
+    }
+    console.log("hii", selectedItem);
   return (
-    <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl relative">
+    <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <div className="flex justify-between items-center">
-          <Header category="Your" title="Inventory List" />          
-        </div> 
-        <div className="flex">
+          <Header category="Your" title="Inventory Details" />
+          </div>
+{ selectedItem &&  data &&   (    <div className="flex">
       <div class=" flex-col  mr-[30rem]">
         <label className="block mb-4">
                     Item Number:
                     <input
                       type="text"
-                      value={itemNumber}
-                      onChange={(e) => setItemNumber(e.target.value)}
+                      value={selectedItem.itemNumber}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -134,8 +67,8 @@ console.log(itemNumber,
                     Size:
                     <input
                       type="text"
-                      value={size}
-                      onChange={(e) => setSize(e.target.value)}
+                      value={selectedItem.size}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -143,8 +76,8 @@ console.log(itemNumber,
                   <label>
                   <div className="p-4">                
                       <select 
-                      value={location} 
-                      onChange={(e) => {setLocation(e.target.value)}}
+                      value={selectedItem.location} 
+                      onChange={(e) => {handleUpdate(e)}}
                       className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       required
                           >
@@ -159,8 +92,8 @@ console.log(itemNumber,
                     Pair/Bag:
                     <input
                       type="number"
-                      value={pair}
-                      onChange={(e) => setPair(e.target.value)}
+                      value={selectedItem.pairOrBag}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -169,8 +102,8 @@ console.log(itemNumber,
                     Factory Price:
                     <input
                       type="number"
-                      value={fPrice}
-                      onChange={(e) => setFPrice(e.target.value)}
+                      value={selectedItem.itemFactoryPrice}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -179,8 +112,8 @@ console.log(itemNumber,
                     Selling Price:
                     <input
                       type="number"
-                      value={sPrice}
-                      onChange={(e) => setSPrice(e.target.value)}
+                      value={selectedItem.itemSellingPrice}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -189,8 +122,8 @@ console.log(itemNumber,
                     Reorder Level:
                     <input
                       type="number"
-                      value={reorder}
-                      onChange={(e) => setReorder(e.target.value)}
+                      value={selectedItem.itemReorderLevel}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -199,8 +132,8 @@ console.log(itemNumber,
                     Units on Hand (Bag):
                     <input
                       type="number"
-                      value={units}
-                      onChange={(e) => setUnits(e.target.value)}
+                      value={selectedItem.unitsOnHand}
+                      onChange={(e) => {handleUpdate(e)}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -209,18 +142,18 @@ console.log(itemNumber,
                     id="fileInput"
                     type="file"
                     name="image"
-                    onChange={handleFileInputChange}
-                    value={fileInputState}
+                    // onChange={handleFileInputChange}
+                    // value={fileInputState}
                     className="form-input"
                 />
 
-        {previewSource && (
+        {/* {previewSource && (
                 <img
                     src={previewSource}
                     alt="chosen"
                     style={{ height: '300px' }}
                 />
-            )}
+            )} */}
         </div>
     
         <div className="flex-col">
@@ -231,8 +164,8 @@ console.log(itemNumber,
                     Stock Date:
                     <input
                       type="text"
-                      value={stockDate}
-                      onChange={(e) => setStockDate(e.target.value)}
+                      value={data.stockDate}
+                      onChange={(e) => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -241,9 +174,9 @@ console.log(itemNumber,
                   <label className="block mb-4">
                     Number of Bags:
                     <input
-                      type="text"
-                      value={numberOfBags}
-                      onChange={(e) => setNumberOfBags}
+                      type="number"
+                      value={data.numberOfBags}
+                      onChange={(e) => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -251,16 +184,16 @@ console.log(itemNumber,
                   <label className="block mb-4">
                     Location:
                     <input
-                      
-                      value={Slocation}
-                      onChange={(e) => setSlocation}
+                      type="text"
+                      value={data.location}
+                      onChange={(e) => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
                   </label>
                   <select 
-                      value={description} 
-                      onChange={(e) => setDescription(e.target.value)}
+                      value={selectedItem.description} 
+                      onChange={(e) => {}}
                       className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       required
                           >
@@ -271,9 +204,9 @@ console.log(itemNumber,
                   <label className="block mb-4">
                     Factory Price:
                     <input
-                      type="text"
-                      value={factoryPrice}
-                      onChange={(e) => setFactoryPrice(e.target.value)}
+                      type="number"
+                      value={data.factoryPrice}
+                      onChange={(e) => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -281,9 +214,9 @@ console.log(itemNumber,
                   <label className="block mb-4">
                     Selling Price:
                     <input
-                     
-                      value={sellingPrice}
-                      onChange={(e) => setSellingPrice(e.target.value)}
+                      type="number"
+                      value={data.sellingPrice}
+                      onChange={(e) => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -291,15 +224,15 @@ console.log(itemNumber,
 
                   <button
                         type="submit"
-                        onClick={(e) => handleSubmit(e)}
+                        onClick={() => {}}
                         className={`text-white text-lg rounded-[10px] bg-[#7352ff]  p-3 hover:drop-shadow-xl`}
                       >
-                      +  Add Transaction
+                      +  Update Transaction
                       </button>
         </div>
-      </div>
+      </div>)}
     </div>
   )
 }
 
-export default Inventory
+export default InventoryDetails

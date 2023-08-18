@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Ecommerce, Orders, Customers, Products, DetailsPage, Inventory } from './pages';
+import { Ecommerce, Orders, Customers, Products, DetailsPage, Inventory, InventoryDetails } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -64,6 +64,7 @@ const App = () => {
                 <Route path="/" element={(<Ecommerce />)} />
                 <Route path="/home" element={(<Ecommerce />)} />
                 <Route path="/inventory" element={(<Inventory />)} />
+                <Route path="/inventory/:Stock_id/:Item_id" element={(<InventoryDetails />)} />
 
                 {/* pages  */}
                 <Route path="/orders" element={<Orders />} />
