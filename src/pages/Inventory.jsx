@@ -118,11 +118,11 @@ const handleItemNumberChange = () =>{
 }
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl relative">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-start items-center">
           <Header category="Your" title="Inventory List" />          
         </div> 
-        <div className="flex">
-      <div class=" flex-col  mr-[30rem]">
+        <div className="flex justify-center space-x-28">
+      <div class=" flex-col ">
         <label className="block mb-4">
                     Item Number:
                     <input
@@ -147,7 +147,9 @@ const handleItemNumberChange = () =>{
                     />
                   </label>
                   <label>
-                  <div className="p-4">                
+                  <div className="p-4">  
+                  <label>  
+                    Location           
                       <select 
                       value={location} 
                       onChange={(e) => {setLocation(e.target.value)}}
@@ -159,6 +161,7 @@ const handleItemNumberChange = () =>{
                         <option value="B">B</option>
                         <option value="C">C</option>
                       </select>
+                      </label> 
                   </div>
                   </label>  
                   <label className="block mb-4">
@@ -267,6 +270,8 @@ const handleItemNumberChange = () =>{
                       required
                     />
                   </label>
+                  <label>
+                    Description
                   <select 
                       value={description} 
                       onChange={(e) => {
@@ -279,6 +284,7 @@ const handleItemNumberChange = () =>{
                         <option value="Stock In">Stock In</option>
                         <option value="Stock Out">Stock Out</option>
                       </select>
+                      </label>
                   <label className="block mb-4">
                     Factory Price:
                     <input
