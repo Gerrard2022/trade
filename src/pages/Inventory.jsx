@@ -113,7 +113,6 @@ console.log(itemNumber,
 
 const handleItemNumberChange = () =>{
   const numberOfBags = itemNumber.split('/')[1];
-  console.log(numberOfBags);
   setNumberOfBags(numberOfBags);
 }
   return (
