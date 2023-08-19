@@ -18,7 +18,7 @@ const Inventory = () => {
   const [fPrice, setFPrice] = useState();
   const [sPrice, setSPrice] = useState();
   const [reorder, setReorder] = useState();
-  const [units, setUnits] = useState();
+ // const [units, setUnits] = useState();
 
   // states fr stock
   const [stockDate, setStockDate ] = useState();
@@ -61,7 +61,6 @@ console.log(itemNumber,
   fPrice, 
   sPrice, 
   reorder, 
-  units, 
   stockDate, 
   numberOfBags,
   Slocation,
@@ -71,17 +70,19 @@ console.log(itemNumber,
   console.log('location',location)
     e.preventDefault();
     axios.post(`${import.meta.env.VITE_BASE_URL}/client/stocks`, 
-    {itemNumber, 
+    {items: [{
+      itemNumber, 
       size, 
       location, 
-      pair, 
-      fPrice, 
-      sPrice, 
-      reorder, 
-      units, 
+      pairOrBag: pair, 
+      itemFactoryPrice: fPrice, 
+      itemSellingPrice: sPrice, 
+      itemReorderLevel: reorder, 
+      unitsOnHand: numberOfBags
+    }], 
       stockDate, 
       numberOfBags,
-      Slocation,
+      location: Slocation,
       description,
       factoryPrice,
       sellingPrice
@@ -112,8 +113,8 @@ console.log(itemNumber,
   // };
 
 const handleItemNumberChange = () =>{
-  const numberOfBags = itemNumber.split('/')[1];
-  setNumberOfBags(numberOfBags);
+  const pair = itemNumber.split('/')[1];
+  setPair(pair);
 }
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl relative">
@@ -204,8 +205,8 @@ const handleItemNumberChange = () =>{
                     Units on Hand (Bag):
                     <input
                       type="number"
-                      value={units}
-                      onChange={(e) => setUnits(e.target.value)}
+                      value={numberOfBags}
+                      onChange={() => {}}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
