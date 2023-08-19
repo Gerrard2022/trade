@@ -13,7 +13,7 @@ const Inventory = () => {
   // states 4 inventory item
   const [itemNumber, setItemNumber] = useState();
   const [size, setSize] = useState();
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState('A');
   const [pair, setPair] = useState();
   const [fPrice, setFPrice] = useState();
   const [sPrice, setSPrice] = useState();
@@ -22,9 +22,9 @@ const Inventory = () => {
 
   // states fr stock
   const [stockDate, setStockDate ] = useState();
-  const [numberOfBags, setNumberOfBags ] = useState();
+  const [numberOfBags, setNumberOfBags ] = useState(0);
   const [Slocation, setSlocation ] = useState();
-  const [description, setDescription ] = useState();
+  const [description, setDescription ] = useState('Stock In');
   const [factoryPrice, setFactoryPrice ] = useState();
   const [sellingPrice, setSellingPrice] = useState();
 
@@ -68,6 +68,7 @@ console.log(itemNumber,
   description,
   factoryPrice,
   sellingPrice);
+  console.log('location',location)
     e.preventDefault();
     axios.post(`${import.meta.env.VITE_BASE_URL}/client/stocks`, 
     {itemNumber, 
@@ -110,7 +111,11 @@ console.log(itemNumber,
   //     }
   // };
 
-
+const handleItemNumberChange = () =>{
+  const numberOfBags = itemNumber.split('/')[1];
+  console.log(numberOfBags);
+  setNumberOfBags(numberOfBags);
+}
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl relative">
           <div className="flex justify-between items-center">
@@ -124,6 +129,7 @@ console.log(itemNumber,
                       type="text"
                       value={itemNumber}
                       onChange={(e) => setItemNumber(e.target.value)}
+                      onBlur={() => handleItemNumberChange()}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -243,7 +249,10 @@ console.log(itemNumber,
                     <input
                       type="text"
                       value={numberOfBags}
-                      onChange={(e) => setNumberOfBags}
+                      onChange={(e) => {
+                        setNumberOfBags(e.target.value)
+                        console.log(numberOfBags)
+                      }}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
@@ -253,18 +262,20 @@ console.log(itemNumber,
                     <input
                       
                       value={Slocation}
-                      onChange={(e) => setSlocation}
+                      onChange={(e) => setSlocation(e.target.value)}
                       className="w-full px-3 py-2 border rounded"
                       required
                     />
                   </label>
                   <select 
                       value={description} 
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={(e) => {
+                        console.log(e.target.value)
+                        setDescription(e.target.value)
+                      }}
                       className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       required
                           >
-                        
                         <option value="Stock In">Stock In</option>
                         <option value="Stock Out">Stock Out</option>
                       </select>
