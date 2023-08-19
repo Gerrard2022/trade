@@ -121,7 +121,7 @@ const handleItemNumberChange = () =>{
           <div className="flex justify-start items-center">
           <Header category="Your" title="Inventory List" />          
         </div> 
-        <div className="flex justify-center space-x-28">
+        <div className="flex justify-between">
       <div class=" flex-col ">
         <label className="block mb-4">
                     Item Number:
