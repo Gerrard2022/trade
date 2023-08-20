@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 
 
 import {Header, TransactionForm} from "../components";
+import NewOrder from "./NewOrder";
 
 const Sales = () => {
 
@@ -22,9 +23,16 @@ const Sales = () => {
 
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
           <Header category="Item" title="Orders" />
-            <TransactionForm />
+          <Link to="/new-order">
+          <button
+            className="bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
+            type="button"
+               >
+            Add a New Order
+          </button>
+      </Link>
         </div> 
         <Table>
       <TableHead>

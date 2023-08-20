@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Ecommerce, Orders, Customers, Products, DetailsPage, Inventory, InventoryDetails } from './pages';
+import { Ecommerce, Orders, Customers, Products, DetailsPage, Inventory, InventoryDetails, NewOrder } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -71,6 +71,8 @@ const App = () => {
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/products" element={<Products />} />
                 <Route path='/orders/:id' element={<DetailsPage />} />
+                <Route path='/new-order/:id' element={<NewOrder />} />
+                <Route path='/new-order' element={<NewOrder />} />
               </Routes>
             </div>
             <Footer />

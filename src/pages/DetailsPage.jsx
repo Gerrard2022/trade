@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 import { Header } from '../components';
+
 
 const DetailsPage = () => {
 
@@ -25,11 +26,19 @@ console.log(data.totalAmount);
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
           <div className="flex justify-between items-center">
           <Header category="Your" title="Order Details" />
+          <Link to={`/new-order/${id}`}>
+          <button
+            className="bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
+            type="button"
+               >
+            Add a New Order
+          </button>
+      </Link>
           </div>
     <div className="flex">
       <div class="flex-1 h-40 mt-8 mr-8 flex items-center justify-center">
         <div class="text-black text-center">
-          <p class="text-lg mt-2 font-bold">Customer: ${data.customer}</p>
+          <p class="text-lg mt-2 font-bold">Customer Names : {data.customer}</p>
           <p className='mt-2'>Customer Balance: $ {data.balance}</p>
           <p className='mt-2'>Payment Method: {data.method}</p>
         </div>

@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect  } from 'react';
 import axios from 'axios';
+import { Table, TableHead, TableRow, TableCell, TableBody, Box, useMediaQuery } from '@mui/material';
 
 import {Header} from "../components";
 
 const Inventory = () => {
+
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BASE_URL}/client/stocks`)
+    .then((res) =>{ 
+      setData(res.data);
+     // console.log("hii", res.data.items);
+     // setLoading(false);
+    })
+    .catch(err => console.log(err))
+}, []);
 
   // image upload states and code
   const [fileInputState, setFileInputState] = useState('');
@@ -18,7 +31,7 @@ const Inventory = () => {
   const [fPrice, setFPrice] = useState();
   const [sPrice, setSPrice] = useState();
   const [reorder, setReorder] = useState();
- // const [units, setUnits] = useState();
+
 
   // states fr stock
   const [stockDate, setStockDate ] = useState();
@@ -122,8 +135,8 @@ const handleItemNumberChange = () =>{
           <Header category="Your" title="Inventory List" />          
         </div> 
         <div className="flex justify-between">
-      <div class=" flex-col ">
-        <label className="block mb-4">
+           <div class=" flex-col ">
+             <label className="block mb-4">
                     Item Number:
                     <input
                       type="text"
@@ -214,7 +227,9 @@ const handleItemNumberChange = () =>{
                       required
                     />
             </label>
-            <input
+        </div>
+         <div className="mx-10">
+                  <input
                     id="fileInput"
                     type="file"
                     name="image"
@@ -230,8 +245,7 @@ const handleItemNumberChange = () =>{
                     style={{ height: '300px' }}
                 />
             )}
-        </div>
-    
+       </div>
         <div className="flex-col">
           <p className="text-3xl font-extrabold tracking-tight text-slate-900">
             Add New Stock
@@ -315,6 +329,39 @@ const handleItemNumberChange = () =>{
                       </button>
         </div>
       </div>
+
+      <div className="mt-8">
+      <p className="text-3xl font-extrabold tracking-tight mb-9 text-center text-slate-900">
+      All Your Stocks
+    </p>
+      <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Bags</TableCell>
+                <TableCell>Factory Price</TableCell>
+                <TableCell>Selling Price</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {data && data.map((stock) => (
+            
+                      <TableRow key={stock._id} className="cursor-pointer hover:bg-gray-100">
+                        <TableCell>{stock.stockDate}</TableCell>
+                        <TableCell>{stock.description}</TableCell>
+                        <TableCell>{stock.location}</TableCell>
+                        <TableCell>{stock.numberOfBags}</TableCell>
+                        <TableCell>{stock.factoryPrice}</TableCell>
+                        <TableCell>{stock.sellingPrice}</TableCell>
+                        </TableRow>
+                  ))}
+        </TableBody>
+
+          </Table> 
+      </div>
+     
     </div>
   )
 }

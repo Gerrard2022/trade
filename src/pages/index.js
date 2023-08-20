@@ -5,4 +5,5 @@ export { default as Products } from './Products';
 export { default as DetailsPage } from './DetailsPage';
 export { default as Inventory } from './Inventory';
 export { default as InventoryDetails } from "./InventoryDetails";
+export { default as NewOrder} from "./NewOrder";
 

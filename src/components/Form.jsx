@@ -29,11 +29,11 @@ const Form = () => {
   return (
     <div>
       <button
-        className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
+        className="bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
         type="button"
         onClick={() => setIsOpen(true)}
       >
-        Open customer Form
+        Add a new customer
       </button>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
