@@ -5,8 +5,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 
 
-import {Header, TransactionForm} from "../components";
-import NewOrder from "./NewOrder";
+import {Header} from "../components";
 
 const Sales = () => {
 
