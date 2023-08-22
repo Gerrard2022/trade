@@ -20,7 +20,8 @@ const Form = () => {
     axios.post(`${import.meta.env.VITE_BASE_URL}/client/customers`, {...formData})
     .then(res =>     {
       // location.reload();
-      dispatch({ type: 'CREATE_CUSTOMER', payload: res })
+      dispatch({ type: 'CREATE_CUSTOMER', payload: res });
+      alert(`${res.data.name} is added to your customers`);
     })
     .catch(err => console.log(err))
     setIsOpen(false);

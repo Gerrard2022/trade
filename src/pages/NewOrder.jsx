@@ -12,7 +12,7 @@ const NewOrder = () => {
 
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState();
 
     const [cust, useCust] = useState('');
     const [itemId, setItemId] = useState('');
@@ -50,27 +50,41 @@ const NewOrder = () => {
         }
     }, []);
 
+
+
     const handleSubmit = (e) => {
       e.preventDefault();
       console.log(itemId);
-      setProducts({ id: itemId, unitsTaken:ordered,  orderedBags: ordered ,shippedBags: shipped,customer: cust, balance: balance, topay: topay, paid: paid, method: method})
+      setProducts(prevProducts => ({
+        ...prevProducts,
+        id: itemId,
+        itemNumber: itemTaken,
+        unitsTaken: ordered,
+        orderedBags: ordered,
+        shippedBags: shipped,
+        customer: cust,
+        balance: balance,
+        topay: topay,
+        paid: paid,
+        method: method
+      }));
       console.log(products);
       axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`,  { products })
         .then(res => {
           if (res.status === 201) { // Check the response status
            // dispatchs({ type: 'CREATE_TRANSACTION', payload: res }); // Dispatch res.data
-            alert(`Purchase done for ${products[0].unitsTaken}  items of ${itemTaken}`);
-            setProducts({products: []});
+            alert(`Purchase done for ${p}  items of ${res.unitsTaken}`);
+            setProducts({});
             location.reload()
           } else {
             console.error("Transaction creation failed");
             alert("Transaction failed");
-             setProducts({products: []});
+             setProducts({});
           }
         })
         .catch(err => {
           console.error(err)
-         setProducts({products: []})
+         setProducts({})
         })
     };
 
@@ -167,6 +181,7 @@ const NewOrder = () => {
             <input 
             type="number"
             value={topay}
+            onChange={() => {}}
             className="w-full px-3 py-2 border rounded"
              />
           </label>
