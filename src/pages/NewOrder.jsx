@@ -12,9 +12,9 @@ const NewOrder = () => {
 
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
-    const [products, setProducts] = useState();
+    const [products, setProducts] = useState({});
 
-    const [cust, useCust] = useState('');
+    const [cust, setCust] = useState('');
     const [itemId, setItemId] = useState('');
     const [method, setMethod] = useState();
     const [paid, setPaid] = useState();
@@ -23,7 +23,7 @@ const NewOrder = () => {
     const [shipped, setShipped] = useState(0);
     const [ordered, setOrdered] = useState(0);
     const [itemTaken, setItemTaken] = useState();
-    const [itemPrice, setItemPrice] = useState()
+    const [itemPrice, setItemPrice] = useState();
 
 
     useEffect(() => {
@@ -54,9 +54,9 @@ const NewOrder = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log(itemId);
-      setProducts(prevProducts => ({
-        ...prevProducts,
+    
+      // Create the data object to send to the API
+      const requestData = {
         id: itemId,
         itemNumber: itemTaken,
         unitsTaken: ordered,
@@ -66,27 +66,43 @@ const NewOrder = () => {
         balance: balance,
         topay: topay,
         paid: paid,
-        method: method
-      }));
-      console.log(products);
-      axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`,  { products })
+        method: method,
+      };
+    
+      // Log the requestData for debugging
+      console.log(requestData);
+    
+      // Send a POST request to the API
+      axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, requestData)
         .then(res => {
-          if (res.status === 201) { // Check the response status
-           // dispatchs({ type: 'CREATE_TRANSACTION', payload: res }); // Dispatch res.data
-            alert(`Purchase done for ${p}  items of ${res.unitsTaken}`);
-            setProducts({});
-            location.reload()
+          if (res.status === 201) {
+            // Display a success message to the user
+            alert(`Purchase done for item with Item Number${res.data.itemNumber}, units Taken are ${res.data.orderedBags}`);
+            
+            // Clear the form inputs and reload the page
+            setItemId(null);
+            setItemTaken('');
+            setOrdered('');
+            setShipped('');
+            setCust('');
+            setBalance('');
+            setTopay('');
+            setPaid('');
+            setMethod('');
+            
+            // Reload the page
+            location.reload();
           } else {
             console.error("Transaction creation failed");
             alert("Transaction failed");
-             setProducts({});
           }
         })
         .catch(err => {
-          console.error(err)
-         setProducts({})
-        })
+          console.error(err);
+          alert("An error occurred. Please try again.");
+        });
     };
+    
 
 
   return (
@@ -97,7 +113,7 @@ const NewOrder = () => {
       
           <p class="text-lg mt-2 font-bold">Select customer</p>
           <select value={data.customer || cust} 
-                      onChange={(e) =>  useCust(e.target.value)}
+                      onChange={(e) =>  setCust(e.target.value)}
                       className="block appearance-none w-[18rem] bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       required
                           >
@@ -224,13 +240,13 @@ const NewOrder = () => {
       <TableBody>
           
           <TableRow>
-            <TableCell>{}</TableCell>
+            <TableCell>{data.itemNumber}</TableCell>
             <TableCell>{data.orderedBags}</TableCell>
             <TableCell>{data.shippedBags}</TableCell>
             <TableCell>{data.leftBags}</TableCell>
-            <TableCell>{}</TableCell>
-            <TableCell>{}</TableCell>
-            <TableCell>{data.totalAmount}</TableCell>
+            <TableCell>{data.bag}</TableCell>
+            <TableCell>{data.topay / data.orderedBags}</TableCell>
+            <TableCell>{data.topay}</TableCell>
  
           </TableRow>             
        

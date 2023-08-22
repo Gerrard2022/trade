@@ -12,8 +12,8 @@ const Ecommerce = () => {
 
   return (
     <div className="mt-24">
-      <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-         <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
+      <div className="flex  justify-center gap-5 ">
+         <div className="flex m-3  justify-between gap-10 items-center">
           {earningData.map((item) => (
               <div key={item.title} className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl ">
                 <Link to={`/${item.title}`}>

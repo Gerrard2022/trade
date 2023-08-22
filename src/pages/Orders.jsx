@@ -56,7 +56,7 @@ const Sales = () => {
       </TableCell>
       <TableCell>
         <Link to={`/orders/${info._id}`}>
-          {info.name}
+          {info.itemNumber}
         </Link>
       </TableCell>
       <TableCell>
@@ -86,7 +86,7 @@ const Sales = () => {
       </TableCell>
       <TableCell>
         <Link to={`/orders/${info._id}`}>
-          ${info.totalAmount}
+          ${info.topay}
         </Link>
       </TableCell>
     </TableRow>
