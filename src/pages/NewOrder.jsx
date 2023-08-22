@@ -15,6 +15,7 @@ const NewOrder = () => {
     const [products, setProducts] = useState([]);
 
     const [cust, useCust] = useState('');
+    const [itemId, setItemId] = useState('');
     const [method, setMethod] = useState();
     const [paid, setPaid] = useState();
     const [topay, setTopay] = useState(0);
@@ -51,7 +52,8 @@ const NewOrder = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      setProducts([{ id, unitsTaken: unitsTaken, customer: cust, balance: balance, topay: topay, paid: paid, method: method}])
+      console.log(itemId);
+      setProducts({ id: itemId, unitsTaken:ordered,  orderedBags: ordered ,shippedBags: shipped,customer: cust, balance: balance, topay: topay, paid: paid, method: method})
       console.log(products);
       axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`,  { products })
         .then(res => {
@@ -62,6 +64,7 @@ const NewOrder = () => {
             location.reload()
           } else {
             console.error("Transaction creation failed");
+            alert("Transaction failed");
              setProducts({products: []});
           }
         })
@@ -69,8 +72,8 @@ const NewOrder = () => {
           console.error(err)
          setProducts({products: []})
         })
-        .finally(() => setIsOpen(false)); // Always close the modal, regardless of success or failure
     };
+
 
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
@@ -107,26 +110,28 @@ const NewOrder = () => {
                         <option value="Cash">Cash</option>
                       </select>
                
-                  <select 
-                    value={itemTaken} 
-                    onChange={(e) => {
-                        setItemTaken(e.target.value)
-                        setItemPrice(items.find(stock => stock.items.some(item => item.itemNumber === e.target.value))?.items.find(item => item.itemNumber === e.target.value)?.itemSellingPrice || null);
-                    }}
-                    
-                    className=" my-4 block appearance-none w-[18rem] bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                        >
-                    <option>Select an Item Number</option>     
+                      <select 
+                        value={itemTaken} 
+                        onChange={(e) => {
+                          setItemTaken(e.target.value);
+                          setItemPrice(
+                            items.find(stock => stock.items.some(item => item.itemNumber === e.target.value))
+                              ?.items.find(item => item.itemNumber === e.target.value)?.itemSellingPrice || null
+                          );
+                          setItemId(
+                            items.flatMap(stock => stock.items).find(item => item.itemNumber === e.target.value)?._id || null
+                          );
+                        }}
+                        className="my-4 block appearance-none w-[18rem] bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                        required
+                      >
+                        <option value="">Select an Item Number</option>     
                         {items && items.map((stock) => (
-                            stock.items.map(({
-                            itemNumber ,
-                            _id
-                            }) => (  
-                            <option key={_id}>{itemNumber}</option>
-                        ))
+                          stock.items.map(({ itemNumber, _id }) => (  
+                            <option key={_id} value={itemNumber}>{itemNumber}</option>
+                          ))
                         ))}
-                </select>
+                      </select>
                 <div className="flex flex-col gap-3">
                 <label>
                     Ordered Bags:
