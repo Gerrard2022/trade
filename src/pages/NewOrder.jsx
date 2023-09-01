@@ -25,6 +25,10 @@ const NewOrder = () => {
     const [itemTaken, setItemTaken] = useState();
     const [itemPrice, setItemPrice] = useState();
 
+    //
+    const [unitsOnHand, setUnitsOnHand] = useState();   
+    const [pair, setPair] = useState();   
+
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
@@ -64,6 +68,9 @@ const NewOrder = () => {
         topay: topay,
         paid: paid,
         method: method,
+        unitPrice: itemPrice,
+        pairOrBag: pair,
+        unitsOnHand,
       };
 
       setProducts(prevProducts => [...prevProducts, newProduct]);
@@ -170,6 +177,14 @@ const NewOrder = () => {
                           setItemId(
                             items.flatMap(stock => stock.items).find(item => item.itemNumber === e.target.value)?._id || null
                           );
+                          setUnitsOnHand(
+                            items.find(stock => stock.items.some(item => item.itemNumber === e.target.value))
+                              ?.items.find(item => item.itemNumber === e.target.value)?.unitsOnHand || null
+                          );
+                          setPair(
+                            items.find(stock => stock.items.some(item => item.itemNumber === e.target.value))
+                              ?.items.find(item => item.itemNumber === e.target.value)?.pairOrBag || null
+                          );
                         }}
                         className="my-4 block appearance-none w-[18rem] bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         required
@@ -181,6 +196,14 @@ const NewOrder = () => {
                           ))
                         ))}
                       </select>
+                  <p className='mt-3'> Unit price:</p>
+                        <input 
+                        type="number"
+                        value={itemPrice}
+                        onChange={() => {}}
+                        className="w-[18rem] px-3 py-2 mb-3 border rounded"
+                        required
+                        /> 
                 <div className="flex flex-col gap-3">
                 <label>
                     Ordered Bags:
@@ -190,11 +213,20 @@ const NewOrder = () => {
                     onChange={(e) => {
                         setOrdered(e.target.value);
                         setTopay(e.target.value * itemPrice)
+                        setUnitsOnHand(prevUnits => prevUnits - e.target.value)
                     }}
                     className="w-[18rem] px-3 py-2 border rounded"
                     required
                      />
                 </label>
+               <p className='mt-3'> Items left:</p>
+                    <input 
+                    type="number"
+                    value={unitsOnHand}
+                    onChange={() => {}}
+                    className="w-[18rem] px-3 py-2 border rounded"
+                    required
+                    /> 
                 <label>
                     Shipped Bags:
                     <input 
@@ -270,10 +302,10 @@ const NewOrder = () => {
                 <TableCell>{data.itemNumber}</TableCell>
                 <TableCell>{data.orderedBags}</TableCell>
                 <TableCell>{data.shippedBags}</TableCell>
-                <TableCell>{data.leftBags}</TableCell>
-                <TableCell>{data.bag}</TableCell>
+                <TableCell>{data.unitsOnHand}</TableCell>
+                <TableCell>{data.pairOrBag}</TableCell>
                 <TableCell>
-                  {data.topay && data.orderedBags ? data.topay / data.orderedBags : ''}
+                  {data.unitPrice}
                 </TableCell>
                 <TableCell>{data.topay}</TableCell>
               </TableRow>
