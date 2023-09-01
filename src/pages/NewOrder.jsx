@@ -12,7 +12,7 @@ const NewOrder = () => {
 
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
-    const [products, setProducts] = useState({});
+    const [products, setProducts] = useState([{}]);
 
     const [cust, setCust] = useState('');
     const [itemId, setItemId] = useState('');
@@ -50,7 +50,26 @@ const NewOrder = () => {
         }
     }, []);
 
+    const handleAddTable = (e) => {
+      e.preventDefault();
 
+      const newProduct = {
+        id: itemId,
+        itemNumber: itemTaken,
+        unitsTaken: ordered,
+        orderedBags: ordered,
+        shippedBags: shipped,
+        customer: cust,
+        balance: balance,
+        topay: topay,
+        paid: paid,
+        method: method,
+      };
+
+      setProducts(prevProducts => [...prevProducts, newProduct]);
+      console.log(products);
+
+    }
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -215,6 +234,13 @@ const NewOrder = () => {
           <input type="number" className="w-full px-3 py-2 border rounded" value={0} />
           
           <button
+            className="m-5 bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
+            type="submit"
+            onClick={(e) => handleAddTable(e)}
+               >
+            Add to table
+          </button>
+          <button
             className="my-5 bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
             type="submit"
             onClick={(e) => handleSubmit(e)}
@@ -225,7 +251,7 @@ const NewOrder = () => {
   
   </div>
 
-        <Table>
+    <Table>
       <TableHead>
         <TableRow>
           <TableCell>Item</TableCell>
@@ -238,18 +264,21 @@ const NewOrder = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-          
-          <TableRow>
-            <TableCell>{data.itemNumber}</TableCell>
-            <TableCell>{data.orderedBags}</TableCell>
-            <TableCell>{data.shippedBags}</TableCell>
-            <TableCell>{data.leftBags}</TableCell>
-            <TableCell>{data.bag}</TableCell>
-            <TableCell>{data.topay / data.orderedBags}</TableCell>
-            <TableCell>{data.topay}</TableCell>
- 
-          </TableRow>             
-       
+          {products.map((data, index) => (
+            index != 0 && (
+              <TableRow key={index}>
+                <TableCell>{data.itemNumber}</TableCell>
+                <TableCell>{data.orderedBags}</TableCell>
+                <TableCell>{data.shippedBags}</TableCell>
+                <TableCell>{data.leftBags}</TableCell>
+                <TableCell>{data.bag}</TableCell>
+                <TableCell>
+                  {data.topay && data.orderedBags ? data.topay / data.orderedBags : ''}
+                </TableCell>
+                <TableCell>{data.topay}</TableCell>
+              </TableRow>
+            )
+          ))}
       </TableBody>
     </Table>
 
