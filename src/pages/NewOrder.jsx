@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-// import {AiFillDelete}  from 'react-icons'
+import {AiFillDelete}  from 'react-icons/ai'
 
 import { useStateContext } from '../contexts/ContextProvider';
 
@@ -97,7 +97,10 @@ const NewOrder = () => {
     }
 
     const handleDelete = (id) => {
-
+      const updatedProducts = products.filter((product) => product.id !== id);
+    
+      // Update the 'products' state with the new array
+      setProducts(updatedProducts);
     }
 
     const handleSubmit = (e) => {
@@ -332,12 +335,7 @@ const NewOrder = () => {
                         /> 
                 </TableCell>
                 <TableCell>{topay}</TableCell>
-                {/* <TableCell>
-                  <AiFillDelete
-                    className="w-5 h-5 cursor-pointer"
-                    onClick={() => handleDelete(data.id)} // Assuming you have a function handleDelete to delete the item
-                  />
-                </TableCell> */}
+                
               </TableRow>
           {products.map((data, index) => (
              (
@@ -351,12 +349,12 @@ const NewOrder = () => {
                   {data.unitPrice}
                 </TableCell>
                 <TableCell>{data.topay}</TableCell>
-                {/* <TableCell>
+                <TableCell>
                   <AiFillDelete
                     className="w-5 h-5 cursor-pointer"
                     onClick={() => handleDelete(data.id)} // Assuming you have a function handleDelete to delete the item
                   />
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             )
           ))}
