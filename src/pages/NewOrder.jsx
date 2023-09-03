@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 import { useStateContext } from '../contexts/ContextProvider';
@@ -8,11 +8,13 @@ import { useStateContext } from '../contexts/ContextProvider';
 const NewOrder = () => {
 
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { dispatch,customers } = useStateContext();
 
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
-    const [products, setProducts] = useState([{}]);
+    const [products, setProducts] = useState([]);
 
     const [cust, setCust] = useState('');
     const [itemId, setItemId] = useState('');
@@ -28,6 +30,7 @@ const NewOrder = () => {
     //
     const [unitsOnHand, setUnitsOnHand] = useState();   
     const [pair, setPair] = useState();   
+    const [buyBtn,setBuyBtn] = useState(false);
 
 
     useEffect(() => {
@@ -73,9 +76,21 @@ const NewOrder = () => {
         unitsOnHand,
       };
 
-      setProducts(prevProducts => [...prevProducts, newProduct]);
-      console.log(products);
+       setProducts((prevProducts) => (prevProducts ? [...prevProducts, newProduct] : [newProduct]));
+       setBuyBtn(true);
 
+      // Clear the form inputs and reload the page
+      setItemId(null);
+      setItemTaken('');
+      setOrdered('');
+      setShipped('');
+      setCust('');
+      setBalance('');
+      setTopay('');
+      setPaid('');
+      setMethod('');
+      setUnitsOnHand();
+      setItemPrice();
     }
 
     const handleSubmit = (e) => {
@@ -96,15 +111,17 @@ const NewOrder = () => {
       };
     
       // Log the requestData for debugging
-      console.log(requestData);
+      console.log(products);
     
       // Send a POST request to the API
-      axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, requestData)
+      axios.post(`${import.meta.env.VITE_BASE_URL}/client/transactions`, products)
         .then(res => {
           if (res.status === 201) {
             // Display a success message to the user
-            alert(`Purchase done for item with Item Number${res.data.itemNumber}, units Taken are ${res.data.orderedBags}`);
-            
+            res.data.map(item =>{
+              alert(`Purchase done for item with Item Number${item.itemNumber}, units Taken are ${item.orderedBags}`)
+            })
+                
             // Clear the form inputs and reload the page
             setItemId(null);
             setItemTaken('');
@@ -116,8 +133,8 @@ const NewOrder = () => {
             setPaid('');
             setMethod('');
             
-            // Reload the page
             location.reload();
+
           } else {
             console.error("Transaction creation failed");
             alert("Transaction failed");
@@ -134,7 +151,8 @@ const NewOrder = () => {
   return (
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
 
-    <div className="flex justify-between">
+    <form>
+      <div className="flex justify-between">
       <div class="flex flex-col ">
       
           <p class="text-lg mt-2 font-bold">Select customer</p>
@@ -272,17 +290,17 @@ const NewOrder = () => {
                >
             Add to table
           </button>
-          <button
+    {  buyBtn && (<button
             className="my-5 bg-[#7352FF] text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
             type="submit"
             onClick={(e) => handleSubmit(e)}
                >
             Confirm Order
-          </button>
+          </button>)}
         </div>
   
   </div>
-
+  </form> 
     <Table>
       <TableHead>
         <TableRow>
@@ -297,7 +315,7 @@ const NewOrder = () => {
       </TableHead>
       <TableBody>
           {products.map((data, index) => (
-            index != 0 && (
+             (
               <TableRow key={index}>
                 <TableCell>{data.itemNumber}</TableCell>
                 <TableCell>{data.orderedBags}</TableCell>
