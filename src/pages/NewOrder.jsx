@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+// import {AiFillDelete}  from 'react-icons'
 
 import { useStateContext } from '../contexts/ContextProvider';
 
@@ -31,7 +32,8 @@ const NewOrder = () => {
     const [unitsOnHand, setUnitsOnHand] = useState();   
     const [pair, setPair] = useState();   
     const [buyBtn,setBuyBtn] = useState(false);
-
+    const [red, setRed] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_BASE_URL}/client/customers`)
@@ -91,6 +93,11 @@ const NewOrder = () => {
       setMethod('');
       setUnitsOnHand();
       setItemPrice();
+
+    }
+
+    const handleDelete = (id) => {
+
     }
 
     const handleSubmit = (e) => {
@@ -214,48 +221,8 @@ const NewOrder = () => {
                           ))
                         ))}
                       </select>
-                  <p className='mt-3'> Unit price:</p>
-                        <input 
-                        type="number"
-                        value={itemPrice}
-                        onChange={() => {}}
-                        className="w-[18rem] px-3 py-2 mb-3 border rounded"
-                        required
-                        /> 
-                <div className="flex flex-col gap-3">
-                <label>
-                    Ordered Bags:
-                    <input 
-                    type="number"
-                    value={ordered}
-                    onChange={(e) => {
-                        setOrdered(e.target.value);
-                        setTopay(e.target.value * itemPrice)
-                        setUnitsOnHand(prevUnits => prevUnits - e.target.value)
-                    }}
-                    className="w-[18rem] px-3 py-2 border rounded"
-                    required
-                     />
-                </label>
-               <p className='mt-3'> Items left:</p>
-                    <input 
-                    type="number"
-                    value={unitsOnHand}
-                    onChange={() => {}}
-                    className="w-[18rem] px-3 py-2 border rounded"
-                    required
-                    /> 
-                <label>
-                    Shipped Bags:
-                    <input 
-                    type="number"
-                    value={shipped}
-                    onChange={(e) => setShipped(e.target.value)}
-                    className="w-[18rem] px-3 py-2 border rounded"
-                    required
-                     />
-                </label>
-                </div>
+                        
+                
                
       </div>
 
@@ -314,6 +281,64 @@ const NewOrder = () => {
         </TableRow>
       </TableHead>
       <TableBody>
+      <TableRow >
+                <TableCell>{itemTaken}</TableCell>
+                <TableCell> <input 
+                    type="number"
+                    value={ordered}
+                    onChange={(e) => {
+                      setConfirm(true);
+                      setOrdered(e.target.value);
+                      setTopay(e.target.value * itemPrice * pair);
+                      if (e.target.value > unitsOnHand) {
+                        setRed(true);
+                      } else {
+                        setRed(false);
+                      }
+                      }
+                    }
+                    onBlur={(e) => {
+                     
+                      setUnitsOnHand(prevUnits => prevUnits - e.target.value)
+                      
+                        
+                    }}
+                    className="w-[6rem] px-3 py-2 border rounded"
+                    required
+                     />
+                    {red && (<p className='text-red-500'>there is not a enough items left</p>)}</TableCell>
+                <TableCell> <input 
+                    type="number"
+                    value={shipped}
+                    onChange={(e) => setShipped(e.target.value)}
+                    className="w-[6rem] px-3 py-2 border rounded"
+                    required
+                     /></TableCell>
+                <TableCell> <input 
+                    type="number"
+                    value={unitsOnHand}
+                    onChange={() => {}}
+                    className="w-[6rem] px-3 py-2 border rounded"
+                    required
+                    /> </TableCell>
+                <TableCell>{pair}</TableCell>
+                <TableCell>
+                <input 
+                        type="number"
+                        value={itemPrice}
+                        onChange={() => {}}
+                        className="w-[6rem] px-3 py-2 mb-3 border rounded"
+                        required
+                        /> 
+                </TableCell>
+                <TableCell>{topay}</TableCell>
+                {/* <TableCell>
+                  <AiFillDelete
+                    className="w-5 h-5 cursor-pointer"
+                    onClick={() => handleDelete(data.id)} // Assuming you have a function handleDelete to delete the item
+                  />
+                </TableCell> */}
+              </TableRow>
           {products.map((data, index) => (
              (
               <TableRow key={index}>
@@ -326,6 +351,12 @@ const NewOrder = () => {
                   {data.unitPrice}
                 </TableCell>
                 <TableCell>{data.topay}</TableCell>
+                {/* <TableCell>
+                  <AiFillDelete
+                    className="w-5 h-5 cursor-pointer"
+                    onClick={() => handleDelete(data.id)} // Assuming you have a function handleDelete to delete the item
+                  />
+                </TableCell> */}
               </TableRow>
             )
           ))}
